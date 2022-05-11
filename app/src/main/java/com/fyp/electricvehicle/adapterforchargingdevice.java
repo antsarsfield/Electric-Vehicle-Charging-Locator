@@ -20,10 +20,8 @@ public class adapterforchargingdevice extends ArrayAdapter<charginpoitnsdataclas
         @SuppressLint("ViewHolder") View view =layoutInflater.inflate(R.layout.itemslayout,null);
         TextView txtname=view.findViewById(R.id.txtdevicename);
         TextView txtaddress=view.findViewById(R.id.txtaddress);
-        //TextView textconnectortype=view.findViewById(R.id.textconnectortype);
         txtname.setText(thelist.get(position).getChargeDeviceName());
         txtaddress.setText(thelist.get(position).getAddress());
-        //textconnectortype.setText(thelist.get(position).getConnectorType());
         return view;
     }
     public adapterforchargingdevice(@NonNull Context context, ArrayList<charginpoitnsdataclass> thelist) {
