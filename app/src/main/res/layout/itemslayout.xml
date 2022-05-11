@@ -14,61 +14,63 @@
     app:layout_constraintRight_toRightOf="parent"
     android:layout_height="wrap_content"
     xmlns:android="http://schemas.android.com/apk/res/android">
+
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="fill_parent">
+        android:layout_width="410dp"
+        android:layout_height="match_parent">
+
         <ImageView
+            android:id="@+id/imageicongrid"
             android:layout_width="fill_parent"
+            android:layout_height="130dp"
             android:layout_marginLeft="60dp"
             android:layout_marginRight="60dp"
             android:scaleType="fitXY"
-            app:layout_constraintTop_toTopOf="parent"
+            android:src="@drawable/car"
+            app:layout_constraintBottom_toTopOf="@+id/txtdevicename"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/txtdevicename"
-            android:src="@drawable/car"
-            android:layout_height="130dp"
-            android:id="@+id/imageicongrid">
-        </ImageView>
+            app:layout_constraintTop_toTopOf="parent"></ImageView>
+
         <TextView
+            android:id="@+id/txtdevicename"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:fontFamily="@font/montserrat_semibold"
-            android:id="@+id/txtdevicename"
-            android:textColor="@color/black"
-            android:textStyle="bold"
             android:maxLines="2"
             android:paddingLeft="10dp"
-            android:textSize="16dp"
             android:text="Roland Carros 2001"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            android:textStyle="bold"
             app:layout_constraintTop_toBottomOf="@+id/imageicongrid"
-            tools:ignore="MissingConstraints">
-        </TextView>
+            tools:ignore="MissingConstraints"></TextView>
+
         <TextView
+            android:id="@+id/txtaddress"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/txtaddress"
-            android:paddingRight="10dp"
+            android:layout_marginBottom="10dp"
             android:drawableRight="@drawable/ic_baseline_edit_location_24"
-            android:textColor="@color/black"
             android:fontFamily="@font/montserrat_semibold"
             android:paddingLeft="10dp"
-            android:textStyle="bold"
-            android:textSize="13dp"
+            android:paddingRight="10dp"
             android:text="€ 200"
-            android:layout_marginBottom="10dp"
+            android:textColor="@color/black"
+            android:textSize="13dp"
+            android:textStyle="bold"
             app:layout_constraintTop_toBottomOf="@+id/txtdevicename"
-            tools:ignore="MissingConstraints">
-        </TextView>
+            tools:ignore="MissingConstraints"></TextView>
+
         <androidx.cardview.widget.CardView
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_marginTop="10dp"
-            app:layout_constraintTop_toTopOf="parent"
             android:layout_marginRight="10dp"
+            app:cardCornerRadius="40dp"
             app:layout_constraintRight_toRightOf="parent"
-            app:cardCornerRadius="40dp">
-        </androidx.cardview.widget.CardView>
+            app:layout_constraintTop_toTopOf="parent"></androidx.cardview.widget.CardView>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

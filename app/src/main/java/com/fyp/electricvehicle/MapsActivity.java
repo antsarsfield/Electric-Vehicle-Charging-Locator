@@ -8,8 +8,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
+
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -25,10 +24,8 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
     private GoogleMap mMap;
     LocationManager locationManager;
@@ -37,7 +34,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     boolean flag=false;
     public static ArrayList<charginpoitnsdataclass> thedata;
     LocationListener locationListener;
-    TextView txtselectlocation;
     /**
      *
      * Manipulates the map once available.
@@ -50,6 +46,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      */
     public void centreMapOnLocation(Location location, String title){
         flag=true;
+        String chargerTitle = "Charger Location";
         try {
             lat = location.getLatitude();
             longi = location.getLongitude();
@@ -63,7 +60,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.addMarker(new MarkerOptions().position(userLocation).title(title));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation,12));
         LatLng chargerlocation = new LatLng(Double.valueOf(thedata.get(position).getLatitude()),Double.valueOf(thedata.get(position).getLongitude()));
-        mMap.addMarker(new MarkerOptions().position(chargerlocation).title(title));
+        mMap.addMarker(new MarkerOptions().position(chargerlocation).title(chargerTitle));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(chargerlocation,12));
     }
     @Override

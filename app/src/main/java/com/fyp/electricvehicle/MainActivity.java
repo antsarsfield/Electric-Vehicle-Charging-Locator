@@ -1,16 +1,8 @@
 package com.fyp.electricvehicle;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
-import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -24,9 +16,6 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,14 +25,12 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class MainActivity extends AppCompatActivity{
     ListView listview;
     ArrayList<charginpoitnsdataclass> thelist;
     ArrayAdapter<charginpoitnsdataclass> adapter;
-    boolean flag=false;
-    LocationListener locationListener;
-    LocationManager locationManager;
     EditText input;
+    String BuildingNameNotNull,BuildingNumberNotNull,ThoroughfareNotNull;
     public double lat,longi;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
     public void getdata(View view) throws UnsupportedEncodingException {
         input = findViewById(R.id.input);
+
         String PostCode = URLEncoder.encode(input.getText().toString(), StandardCharsets.UTF_8.toString());
         String url="https://chargepoints.dft.gov.uk/api/retrieve/registry/postcode/"+PostCode+"/dist/10/limit/10/format/json";
         StringRequest request = new StringRequest(Request.Method.GET, url, response -> {
@@ -73,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     String ChargeDeviceRef = array.getJSONObject(i).optString("ChargeDeviceRef");
                     String ChargeDeviceName = array.getJSONObject(i).optString("ChargeDeviceName");
                     JSONObject ChargeDeviceLocation = array.getJSONObject(i).getJSONObject("ChargeDeviceLocation");
+
                     Log.d("ChargeDeviceLocation",ChargeDeviceLocation+"");
                     String Latitude = ChargeDeviceLocation.optString("Latitude");
                     String Longitude = ChargeDeviceLocation.optString("Longitude");
@@ -83,7 +72,28 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     String BuildingNumber = Address.optString("BuildingNumber");
                     String Thoroughfare = Address.optString("Thoroughfare");
                     String Street = Address.optString("Street");
-                    String completeadress = BuildingName + "," + BuildingNumber + "," + Thoroughfare + "," + Street;
+                    if(BuildingName != "null")
+                    {
+                        BuildingNameNotNull = BuildingName + ", " ;
+                    }
+                    else{
+                        BuildingNameNotNull ="";
+                    }
+                    if(BuildingNumber != "null")
+                    {
+                        BuildingNumberNotNull = BuildingNumber + ", " ;
+                    }
+                    else{
+                        BuildingNumberNotNull ="";
+                    }
+                    if(Thoroughfare != "null")
+                    {
+                        ThoroughfareNotNull = Thoroughfare + ", " ;
+                    }
+                    else{
+                        ThoroughfareNotNull ="";
+                    }
+                    String completeadress = BuildingNameNotNull + BuildingNumberNotNull + ThoroughfareNotNull + Street;
                     Location startPoint=new Location("locationA");
                     startPoint.setLatitude(lat);
                     startPoint.setLongitude(longi);
@@ -115,62 +125,5 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         rQueue.add(request);
 
-    }
-    public void centreMapOnLocation(Location location, String title){
-        flag=true;
-        lat=location.getLatitude();
-        longi=location.getLongitude();
-        Log.d("longi",longi+"");
-        LatLng userLocation = new LatLng(location.getLatitude(),location.getLongitude());
-    }
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        if (grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,locationListener);
-                Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                centreMapOnLocation(lastKnownLocation,"Your Location");
-            }
-        }
-    }
-    @Override
-    public void onMapReady(@NonNull GoogleMap googleMap) {
-        Intent intent = getIntent();
-        if (intent.getIntExtra("Place Number", 0) == 0) {
-            // Zoom into users location
-            locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-            locationListener = new LocationListener() {
-                @Override
-                public void onLocationChanged(Location location) {
-                    if (flag) {
-
-                    } else {
-                        centreMapOnLocation(location, "Your Location");
-                    }
-                }
-
-                @Override
-                public void onStatusChanged(String s, int i, Bundle bundle) {
-                }
-
-                @Override
-                public void onProviderEnabled(String s) {
-                }
-
-                @Override
-                public void onProviderDisabled(String s) {
-                }
-            };
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-                Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                centreMapOnLocation(lastKnownLocation, "Your Location");
-            } else {
-
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-            }
-        }
     }
 }

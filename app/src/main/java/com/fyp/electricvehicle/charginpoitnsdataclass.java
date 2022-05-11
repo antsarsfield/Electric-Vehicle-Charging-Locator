@@ -1,6 +1,6 @@
 package com.fyp.electricvehicle;
 public class charginpoitnsdataclass {
-    String ChargeDeviceName,ChargeDeviceRef,Latitude,Longitude,address;
+    String ChargeDeviceName,ChargeDeviceRef,Latitude,Longitude,address,ConnectorType;
     public charginpoitnsdataclass(String chargeDeviceName, String chargeDeviceRef, String latitude, String longitude, String address) {
         ChargeDeviceName = chargeDeviceName;
         ChargeDeviceRef = chargeDeviceRef;
@@ -42,4 +42,5 @@ public class charginpoitnsdataclass {
     public void setAddress(String address) {
         this.address = address;
     }
+
 }
